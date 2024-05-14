@@ -30,29 +30,27 @@ classdef generative_model
         function trigger = delta_trigger(t_delta)
             A = 0.03;
             B = 100;
-            trigger = 2 * min(exp(B * (mod(t_delta / generative_model.BEST_T_DELTA, 1) - (1 - A))), 1);
+        %    trigger = 2 * min(exp(B * (mod(t_delta / generative_model.BEST_T_DELTA, 1) - (1 - A))), 1);
 
-        %    trg_delta2 = 1 / max((abs(sin(t_delta * vel_delta / 2 + pi / 32)) ^ 4), 1e-5) * 1e-5;
-
-%            delta_waves = zeros(100, 1);
-%            for i = 1 : 100
-%                delta_waves(i, 1) = cos(generative_model.VEL_DELTA * t_delta - (i - 1) * 2 * pi / 100); %  + pi / 16);
-%            end
-%            trigger = softmax(100 * delta_waves);
-%            trigger = trigger(1);
+            delta_waves = zeros(100, 1);
+            for i = 1 : 100
+                delta_waves(i, 1) = cos(generative_model.VEL_DELTA * t_delta - (i - 1) * 2 * pi / 100); %  + pi / 16);
+            end
+            trigger = softmax(100 * delta_waves);
+            trigger = trigger(1);
         end
 
 
         function clock = syllable_next_prev_clock(t)
-            if sin(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4) ^ 2 > cos(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4) ^ 2
-                clock = 1.;
-            else
-                clock = 0.;
-            end
+%            if sin(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4) ^ 2 > cos(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4) ^ 2
+%                clock = 1.;
+%            else
+%                clock = 0.;
+%            end
 
-%            s_ = 30 * sin(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4 + pi / 64) ^ 2;
-%            c_ = 30 * cos(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4 + pi / 64) ^ 2;
-%            clock = exp(s_) / (exp(s_) + exp(c_));
+            s_ = 30 * sin(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4 + pi / 64) ^ 2;
+            c_ = 30 * cos(t * generative_model.T_SPEED * 2 * pi / 4 - pi / 4 + pi / 64) ^ 2;
+            clock = exp(s_) / (exp(s_) + exp(c_));
         end
 
         function nxt = init_nxt(n_syls)
